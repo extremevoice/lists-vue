@@ -1,29 +1,9 @@
 # lists-vue
 
-## Project setup
-```
-yarn install
-```
+### Desktop
+![cover](data/cover.png)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+### Mobile
+![cover mobile](data/cover-mobile.png)
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+**Примечание**: для хранения входных данных (сущности List) и выбранных элементов каждого из списков используется Vuex хранилище с двумя модулями: lists и select соответственно.

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    text-rendering: optimizeSpeed;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Inconsolata', sans-serif;
+    font-size: 1.6rem;
+}
+
+#app {
+    min-height: 100vh;
+}
+
+.fullscreen-wrapper {
+    min-height: 100vh;
+}
