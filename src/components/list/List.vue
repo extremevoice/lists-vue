@@ -9,13 +9,15 @@
 
             <input
                 class="list__checkbox"
+                :id="`full-list-choice-${list.id}`"
                 type="checkbox"
                 :indeterminate.prop="indeterminate"
                 :checked="listSelected"
                 @change="onListChange($event.target.checked)"
             />
-
-            <h3 class="list__title">List {{ list.id }}</h3>
+            <label :for="`full-list-choice-${list.id}`">
+                <h3 class="list__title">List {{ list.id }}</h3>
+            </label>
         </header>
 
         <ul
@@ -32,8 +34,9 @@
             >
                 <template #checkbox>
                     <input
-                        type="checkbox"
                         class="list-item__checkbox"
+                        :id="`list-item-choice-${listItem.id}`"
+                        type="checkbox"
                         :value="listItem.id"
                         :checked="(selected[list.id] || []).includes(listItem.id)"
                         @change="onListItemChange(listItem.id, $event.target.checked)"

@@ -2,7 +2,9 @@
     <li class="list-item">
         <div class="list-item__right-section">
             <slot name="checkbox" />
-            <h4 class="list_item__title">Item {{ listItem.id }}</h4>
+            <label :for="`list-item-choice-${listItem.id}`">
+                <h4 class="list_item__title">Item {{ listItem.id }}</h4>
+            </label>
         </div>
         <div class="list-item__left-section">
             <input
