@@ -40,10 +40,7 @@
             class="list-block__blocks-wrapper"
             v-else
         >
-            <div
-                class="list-block__blocks list-block__row-wrapper"
-                v-if="selectedAny()"
-            >
+            <div class="list-block__blocks list-block__row-wrapper">
                 <div
                     class="list-block__item-block"
                     v-for="(obj, idx) in mixListItems()"
@@ -73,12 +70,15 @@ export default Vue.extend({
     },
     methods: {
         mixListItems(): Array<{ listItemId: IListItem['id'], color: IListItem['color'] }> {
+            const selectedItems = this.selected[this.list.id] || [];
             // eslint-disable-next-line arrow-body-style
             return this.list.items.flatMap((listItem) => {
-                return Array.from({ length: listItem.value }, () => ({
-                    listItemId: listItem.id,
-                    color: listItem.color,
-                }));
+                return selectedItems.includes(listItem.id)
+                    ? Array.from({ length: listItem.value }, () => ({
+                        listItemId: listItem.id,
+                        color: listItem.color,
+                    }))
+                    : [];
             }).sort(() => Math.random() - 0.5);
         },
         removeBlock(listItemId: IListItem['id']): void {
