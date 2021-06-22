@@ -2,7 +2,11 @@
     <article class="list-block">
         <h3 class="list-block__title">List {{ list.id }}</h3>
 
-        <button class="list-block__toggle-switch" @click="toggleListStatus">
+        <button
+            class="list-block__toggle-switch"
+            @click="toggleListStatus"
+            v-if="(selected[list.id] || []).length > 0"
+        >
             {{ list.status === 'sorted' ? 'Mix' : 'Sort' }}
         </button>
 
@@ -15,15 +19,18 @@
                 class="list-block__blocks"
                 v-for="listItem in list.items"
                 :key="listItem.id"
-                v-show="listItem.value > 0"
             >
                 <div
-                    class="list-block__item-block"
-                    v-for="i in listItem.value"
-                    :key="i"
-                    :style="{'background-color': listItem.color}"
-                    @click="removeBlock(listItem.id)"
+                    class="list-block__row-wrapper"
+                    v-if="(selected[list.id] || []).includes(listItem.id)"
                 >
+                    <div
+                        class="list-block__item-block"
+                        v-for="i in listItem.value"
+                        :key="i"
+                        :style="{'background-color': listItem.color}"
+                        @click="removeBlock(listItem.id)"
+                    />
                 </div>
             </div>
         </div>
@@ -33,15 +40,17 @@
             class="list-block__blocks-wrapper"
             v-else
         >
-            <div class="list-block__blocks">
+            <div
+                class="list-block__blocks list-block__row-wrapper"
+                v-if="selectedAny()"
+            >
                 <div
                     class="list-block__item-block"
                     v-for="(obj, idx) in mixListItems()"
                     :key="idx"
                     :style="{'background-color': obj.color}"
                     @click="removeBlock(obj.listItemId)"
-                >
-                </div>
+                />
             </div>
         </div>
     </article>
@@ -50,11 +59,17 @@
 <script lang="ts">
 import { IList, IListItem } from '@/store/types';
 import Vue, { PropType } from 'vue';
+import { mapState } from "vuex"; 
 
 export default Vue.extend({
     name: 'ListBlock',
     props: {
         list: Object as PropType<IList>,
+    },
+    computed: {
+        ...mapState({
+            selected: (state: any) => state.select.selected,
+        }),
     },
     methods: {
         mixListItems(): Array<{ listItemId: IListItem['id'], color: IListItem['color'] }> {
@@ -84,6 +99,12 @@ export default Vue.extend({
                 },
             );
         },
+        selectedAny(): boolean {
+            const selectedItems: number[] = this.selected[this.list.id];
+            return selectedItems ? this.list.items.some((listItem) => {
+                return selectedItems.includes(listItem.id);
+            }) : false;
+        },
     },
 });
 </script>
@@ -109,13 +130,16 @@ export default Vue.extend({
 }
 
 .list-block__blocks {
-    display: flex;
-    flex-wrap: wrap;
     margin-bottom: 0.7rem;
 
     &:last-child {
         margin-bottom: 0;
     }
+}
+
+.list-block__row-wrapper {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .list-block__item-block {

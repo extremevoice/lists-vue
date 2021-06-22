@@ -12,15 +12,19 @@ export const mutations = {
         const items = state.selected[listId]
         if (items) {
             items.push(listItemId);
+            state.selected[listId] = items;
         } else {
             state.selected[listId] = [listItemId];
         }
+        
+        state.selected = {...state.selected};
     },
     [REMOVE_SELECTED_ITEM](state: ISelectState, { listId, listItemId }: ISelectItemPayload): void {
         state.selected[listId] = state.selected[listId].filter((value) => value !== listItemId);
     },
     [ADD_WHOLE_LIST](state: ISelectState, { listId, selectedItems }: ISelectListPayload): void {
         state.selected[listId] = selectedItems;
+        state.selected = {...state.selected};
     },
     [REMOVE_WHOLE_LIST](state: ISelectState, listId: IList['id'] ): void {
         state.selected[listId] = [];
