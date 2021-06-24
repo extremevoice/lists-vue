@@ -2,13 +2,15 @@
     <article class="list-block">
         <h3 class="list-block__title">List {{ list.id }}</h3>
 
-        <button
-            class="list-block__toggle-switch"
-            @click="toggleListStatus"
-            v-if="(selected[list.id] || []).length > 0"
-        >
-            {{ list.status === 'sorted' ? 'Mix' : 'Sort' }}
-        </button>
+        <transition name="fade">
+            <button
+                class="list-block__toggle-switch"
+                @click="toggleListStatus"
+                v-if="(selected[list.id] || []).length > 0"
+            >
+                {{ list.status === 'sorted' ? 'Mix' : 'Sort' }}
+            </button>
+        </transition>
 
         <!-- Blocks (if sorted) -->
         <div
@@ -20,18 +22,22 @@
                 v-for="listItem in list.items"
                 :key="listItem.id"
             >
-                <div
-                    class="list-block__row-wrapper"
-                    v-if="(selected[list.id] || []).includes(listItem.id)"
-                >
-                    <div
-                        class="list-block__item-block"
-                        v-for="i in listItem.value"
-                        :key="i"
-                        :style="{'background-color': listItem.color}"
-                        @click="removeBlock(listItem.id)"
-                    />
-                </div>
+                <transition name="fade">
+                    <transition-group
+                        name="list"
+                        tag="div"
+                        class="list-block__row-wrapper"
+                        v-if="(selected[list.id] || []).includes(listItem.id)"
+                    >
+                        <div
+                            class="list-block__item-block"
+                            v-for="i in listItem.value"
+                            :key="i"
+                            :style="{'background-color': listItem.color}"
+                            @click="removeBlock(listItem.id)"
+                        />
+                    </transition-group>
+                </transition>
             </div>
         </div>
 
